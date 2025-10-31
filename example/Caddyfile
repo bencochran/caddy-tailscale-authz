@@ -1,0 +1,56 @@
+{
+	tailscale_authz {
+		user alice@example.com *
+		user bob@example.com app1 app2
+	}
+}
+
+(tailscale_authn) {
+	forward_auth unix//run/tailscale.nginx-auth.sock {
+		uri /auth
+		header_up Remote-Addr {remote_host}
+		header_up Remote-Port {remote_port}
+		header_up Original-URI {uri}
+		copy_headers Tailscale-User
+	}
+}
+
+app1.example.com {
+	import tailscale_authn
+	tailscale_authz app1
+
+	reverse_proxy http://backend1.internal:8080
+}
+
+app2.example.com {
+	import tailscale_authn
+	tailscale_authz app2
+
+	reverse_proxy http://backend2.internal:8080
+}
+
+app3.example.com {
+	import tailscale_authn
+	tailscale_authz app3
+
+	reverse_proxy http://backend3.internal:8080
+}
+
+# Example using expanded reverse_proxy approach instead of forward_auth
+app4.example.com {
+	reverse_proxy unix//run/tailscale.nginx-auth.sock {
+		method GET
+		rewrite /auth
+		header_up Remote-Addr {remote_host}
+		header_up Remote-Port {remote_port}
+
+		@good status 2xx
+		handle_response @good {
+			request_header Tailscale-User {resp.header.Tailscale-User}
+
+			tailscale_authz app3
+
+			reverse_proxy http://backend4.internal:8080
+		}
+	}
+}
