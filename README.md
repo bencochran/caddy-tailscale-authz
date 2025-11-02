@@ -7,6 +7,10 @@ A caddy middleware that authorization checks for Tailscale-authenticated request
 
 It doesn’t go groups or anything fancy. Just the minimum to restrict access to certain tailscale users.
 
+## Why?
+
+Scenario: you have a homelab with a bunch of apps behind a reverse proxy. You want to share a couple of those apps with someone. You can invite them to your tailnet and ACL them out of accessing anything but your reverse proxy. Or share your reverse proxy machine with them on on their own tailnet. But in either scenario they have defacto access to every app served by that reverse proxy. And thus, this plugin.
+
 ## Example
 
 ```caddyfile
