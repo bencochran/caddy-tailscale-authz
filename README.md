@@ -76,7 +76,7 @@ If using Docker, see [Adding custom Caddy modules](https://hub.docker.com/_/cadd
 
 #### Site directive
 
-``` caddyfile
+```caddyfile
 tailscale_authz <resource>
 ```
 
@@ -90,7 +90,7 @@ caddy-tailscale-authz requires a `Tailscale-User` header to be populated by an a
 
 [As described in the Caddy docs](https://caddyserver.com/docs/caddyfile/directives/forward_auth#tailscale), `forward_auth` can be used to authenticate via an existing Tailscale connection.
 
-```
+```caddyfile
 example.com {
     forward_auth unix//run/tailscale.nginx-auth.sock {
         uri /auth
@@ -109,6 +109,11 @@ example.com {
 #### Using with [caddy-tailscale](https://github.com/tailscale/caddy-tailscale)
 
 The `tailscale_auth` directive from caddy-tailscale doesn’t populate the `Tailscale-User` header so we must hoist the `user.tailscale_user` value to a header ourselves.
+
+```caddyfile
+# TODO: Add caddy-tailscale example
+```
+
 
 ## HTTP Status Codes
 
