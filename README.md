@@ -3,7 +3,7 @@
 > [!CAUTION]
 > This module is very experimental. It may not work. It may not provide any security. It may break all on its own or because I make breaking changes. You almost certainly shouldn’t use it.
 
-A caddy middleware that authorization checks for Tailscale-authenticated requests. It works in conjunction with [tailscale-nginx-auth](https://caddyserver.com/docs/caddyfile/directives/forward_auth#tailscale) forward auth proxy or [caddy-tailscale](https://github.com/tailscale/caddy-tailscale), adding a minimal ACL layer on top of the identity information provided by those.
+A caddy middleware that performs authorization checks for Tailscale-authenticated requests. It works in conjunction with [tailscale-nginx-auth](https://caddyserver.com/docs/caddyfile/directives/forward_auth#tailscale) forward auth proxy or [caddy-tailscale](https://github.com/tailscale/caddy-tailscale), adding a minimal ACL layer on top of the identity information provided by those.
 
 It doesn’t go groups or anything fancy. Just the minimum to restrict access to certain tailscale users.
 
