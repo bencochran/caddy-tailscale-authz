@@ -45,7 +45,17 @@ func (m *Middleware) Validate() error {
 }
 
 func (m Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
-	// TODO: Implement
+	tailscaleUser := r.Header.Get("Tailscale-User")
+
+	if tailscaleUser == "" {
+		return caddyhttp.Error(http.StatusUnauthorized, fmt.Errorf("tailscale authentication required"))
+	}
+
+	if !m.App.AccessList.IsUserAllowedResource(tailscaleUser, m.ResourceName) {
+		return caddyhttp.Error(http.StatusForbidden, fmt.Errorf("access denied to resource: %s", m.ResourceName))
+	}
+
+	// User is authorized, continue with next handler
 	return next.ServeHTTP(w, r)
 }
 
