@@ -33,6 +33,10 @@ func (m *Middleware) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	}
 	m.ResourceName = d.Val()
 
+	if m.ResourceName == "*" {
+		return d.Err("wildcard '*' not allowed as resource name")
+	}
+
 	if d.NextArg() {
 		return d.ArgErr()
 	}
